@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+
+    <!-- Link to Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="{%static "static/vendor/fontawesome-free/css/all.min.css" %}">
+    <link
+        href= "https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="{%static "static/css/sb-admin-2.min.css" rel="stylesheet" %}">
+
+   
+</head>
+<body id="page-top">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'home' %}">My Website</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'car_list' %}">Cars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'customer_list' %}">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'walkin_list' %}">WalkIns</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'exchange-vehicle' %}">Exchange Vehicle</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all_payments' %}">Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all-bookings' %}">Bookings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'all_orders' %}">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' request.user.id %}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <!-- Link to Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+     <script src="{%static "static/vendor/jquery/jquery.min.js" %}"></script>
+     <script src="{%static "static/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+ 
+     <script src="{%static "static/vendor/jquery-easing/jquery.easing.min.js" %}"></script>
+ 
+     <script src="{%static "static/js/sb-admin-2.min.js" %}"></script>
+ 
+     <script src="{%static "static/vendor/chart.js/Chart.min.js" %}"></script>
+ 
+     <script src="{%static "static/js/demo/chart-area-demo.js" %}"></script>
+     <script src="{%static "static/js/demo/chart-pie-demo.js" %}"></script>
+ 
+ 
+</body>
+</html>

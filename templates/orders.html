@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    {% load static %}
+    <title>{% block title %}My Website{% endblock %}</title>
+
+
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="{%static "vendor/fontawesome-free/css/all.min.css"%}">
+    <link
+        href= "https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="{%static "css/sb-admin-2.min.css" rel="stylesheet" %}">
+    <link href="{%static "vendor/datatables/dataTables.bootstrap4.min.css" %}">
+
+   
+</head>
+
+<body>
+    
+    {% if orders %}
+   <div id="content">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h4 class="m-0 font-weight-bold text-primary">Orders Data</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Order payment</th>
+                                <th>Car Model</th>
+                                <th>Booking</th>                        
+                                <th>Date of Order</th>                        
+                                <th>Selling Price</th>                        
+                                <th>Total Amount Paid</th>                        
+                                <th>Remaining Payment</th>                        
+                                <th>Remarks</th>                        
+                                <th>Reason of Cancel</th>                        
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>                                
+                                <td>{{ order.customer }}</td>
+                                <td>{{ order.payment }}</td>
+                                <td>{{ order.car_model }}</td>
+                                <td>{{ order.booking }}</td>
+                                <td>{{ order.date_of_order }}</td>
+                                <td>{{ order.selling_price }}</td>
+                                <td>{{ order.total_amount_paid }}</td>
+                                <td>{{ order.remaining_payment }}</td>
+                                <td>{{ order.remarks }}</td>
+                                <td>{{ order.cancelled }}</td>
+                                <td>{{ order.reason_of_cancel }}</td>
+                            </tr>
+                            {% endfor %}
+                          
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if user.is_staff %}
+        <a class="btn btn-secondary"  href="{% url 'add_orders'%}">Add</a>   
+        {% endif %}
+    </div> 
+	
+
+    <!-- Link to Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+     <script src="{%static "vendor/jquery/jquery.min.js" %}"></script>
+     <script src="{%static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+ 
+     <script src="{%static "vendor/jquery-easing/jquery.easing.min.js" %}"></script>
+ 
+     <script src="{%static "js/sb-admin-2.min.js" %}"></script>
+ 
+     <script src="{%static "vendor/chart.js/Chart.min.js" %}"></script>
+ 
+     <script src="{%static "js/demo/chart-area-demo.js" %}"></script>
+     <script src="{%static "js/demo/chart-pie-demo.js" %}"></script>
+ 
+</body>
+</html>
+
+{% endblock%}

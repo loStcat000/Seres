@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+
+{% block title %} User Registration {% endblock %}
+
+{% block content %}
+
+<style>
+
+  #intro-upper {
+    opacity: 0.9;  
+    height: 300px; 
+  }
+  body {
+    background-image: url('/static/images/kelly-sikkema-Oz_J_FXKvIs-unsplash.jpg');
+    background-size: cover;
+  }
+</style>
+
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="text-center mb-3">
+            <h1>Register</h1>
+            <hr class="mx-auto" style="width: 80%;">
+          </div>
+          <form method="POST">
+            {% csrf_token %}
+            {{ register_form }}
+            <button class="btn btn-primary w-100 mt-4" type="submit">Register</button>
+          </form>
+          <hr class="mx-auto mt-4" style="width: 80%;">
+          <div class="text-center">
+            <p class="mb-0">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4 shadow-sm">
+        <div class="card-body">
+          <div class="text-center mb-3">
+            <h4>Or register with</h4>
+            <hr class="mx-auto" style="width: 60%;">
+          </div>
+          <div class="text-center">
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock %}
