@@ -30,7 +30,6 @@ class CustomerForm(ModelForm):
 			labels = {
 				'customer_firstname':'First Name', 
 				'customer_lastname':'Last Name',
-				
 				'customer_contact':'Contact Number', 
 			}
 			widgets = {
@@ -122,8 +121,8 @@ class PaymentForm(ModelForm):
             }
 			
 class BookingForm(ModelForm):
-	prebooking_amount = forms.IntegerField(min_value=0)
-	booking_amount = forms.IntegerField(min_value=0)
+	prebooking_amount = forms.IntegerField(min_value=0, required=False)
+	booking_amount = forms.IntegerField(min_value=0, required=False)
 	
 	class Meta:
 			model = Booking
@@ -155,9 +154,10 @@ class OrdersForm(ModelForm):
 	
 	class Meta:
 			model = Orders
-			fields = ("payment","car_name", "car_variant", "booking", "date_of_order", "selling_price", 
+			fields = ("customer", "payment", "car_name", "car_variant", "booking", "date_of_order", "selling_price", 
 			"total_amount_paid", "remaining_payment", "remarks", "cancelled", "reason_of_cancel")
 			labels = {
+				'customer':'Customer', 
 				'payment':'Payment', 
 				'car_name':'Car',
 				'car_variant':'Car Variant',
@@ -172,7 +172,8 @@ class OrdersForm(ModelForm):
 
 			}
 			widgets = {
-				'payment': forms.Select(attrs={}),
+				'customer': forms.Select(attrs={}),
+				'payment': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Payment'}),
 				'car_name': forms.Select(attrs={}),
 				'car_variant': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Car Variant'}),
 				'booking': forms.Select(attrs={}),

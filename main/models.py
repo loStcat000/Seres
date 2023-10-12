@@ -52,7 +52,7 @@ class Booking(models.Model):
     booking_status = models.ForeignKey('BookingType', on_delete=models.CASCADE)
     prebooking_amount = models.IntegerField(default=0, validators=[
         MinValueValidator(0)], null=True, blank=True)
-    booking_amount = models.IntegerField(default=1, validators=[
+    booking_amount = models.IntegerField(validators=[
         MinValueValidator(1)], null=True, blank=True)
     booking_source = models.CharField(max_length=150)
 

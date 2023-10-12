@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Car, Customer, WalkIn, Booking, ExchangeVehicle, Payment, Orders
 from .forms import CarForm, CustomerForm, WalkInForm, ExchangeVehicleForm, PaymentForm, BookingForm, OrdersForm
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import UpdateView
+from . import models
+from django.urls import reverse_lazy 
 
 # Create your views here.
 from django.http import HttpResponse
@@ -87,7 +90,7 @@ def add_booking(request):
                 car = form.save(commit=False)
                 car.user = request.user
                 car.save()
-                return redirect('all-bookings')
+                return redirect('all_bookings')
     else:
         form = BookingForm()
         if 'submitted' in request.GET:
@@ -109,7 +112,7 @@ def add_exchange(request):
                 car = form.save(commit=False)
                 car.user = request.user
                 car.save()
-                return redirect('exchange-vehicle')
+                return redirect('exchange_vehicle')
     else:
         form = ExchangeVehicleForm()
         if 'submitted' in request.GET:
@@ -156,3 +159,118 @@ def add_orders(request):
             submitted=True
     return render(request, "add_orders.html", {'form':form, 'submitted':submitted})
     
+
+class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.Car
+    fields = ['car_name', 'car_model', 'car_variant', 'car_color']
+    template_name = 'add_car.html'
+
+    success_url = reverse_lazy('car_list')
+
+    def test_func(self):
+      car = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            car = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+    
+class CustomerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.Customer
+    fields = ['customer_firstname', 'customer_lastname', 'customer_contact']
+    template_name = 'add_customer.html'
+
+    success_url = reverse_lazy('customer_list')
+
+    def test_func(self):
+      customer = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            customer = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+    
+class WalkinUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.WalkIn
+    fields = ['walkin_firstname', 'walkin_lastname', 'walkin_contact', 'purpose_of_visit', 'outcome_of_visit', 'interest_level', 
+              'remarks', 'test_drive', 'date_of_walkin']
+    template_name = 'add_walkin.html'
+
+    success_url = reverse_lazy('walkin_list')
+
+    def test_func(self):
+      walkin = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            walkin = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+    
+class ExchangeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.ExchangeVehicle
+    fields = ['customer', 'vehicle_name', 'kiloMeters_run', 'vehicle_made_year', 'license_plate', 'vehicle_color', 
+              'customer_estimated_value', 'actual_value', 'exchange_status']
+    template_name = 'add_exchange.html'
+
+    success_url = reverse_lazy('exchange_vehicle')
+
+    def test_func(self):
+      exchange = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            exchange = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+    
+class PaymentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.Payment
+    fields = ['customer', 'payment_method', 'do', 'quotation', 'remarks']
+    template_name = 'add_payments.html'
+
+    success_url = reverse_lazy('all_payments')
+
+    def test_func(self):
+      payment = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            payment = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+    
+class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.Booking
+    fields = ['customer', 'walkin_customer', 'booking_status', 'prebooking_amount', 'booking_amount', 'booking_source']
+    template_name = 'add_booking.html'
+
+    success_url = reverse_lazy('all_bookings')
+
+    def test_func(self):
+      booking = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            booking = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)
+    
+class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = models.Orders
+    fields = ['customer', 'payment', 'car_name', 'car_variant', 'booking', 'date_of_order', 'selling_price', 
+            'total_amount_paid', 'remaining_payment', 'remarks', 'cancelled', 'reason_of_cancel']
+    template_name = 'add_orders.html'
+
+    success_url = reverse_lazy('all_orders')
+
+    def test_func(self):
+      order = self.get_object()
+      return self.request.user.is_superuser
+    
+    def form_valid(self, form):
+            order = form.save(commit=False)
+            form.instance.author = self.request.user
+            return super().form_valid(form)

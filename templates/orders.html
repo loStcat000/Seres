@@ -13,16 +13,7 @@
 
 
     <!-- Link to Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="{%static "vendor/fontawesome-free/css/all.min.css"%}">
-    <link
-        href= "https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
 
-    <link href="{%static "css/sb-admin-2.min.css" rel="stylesheet" %}">
-    <link href="{%static "vendor/datatables/dataTables.bootstrap4.min.css" %}">
-
-   
 </head>
 
 <body>
@@ -40,13 +31,15 @@
                             <tr>
                                 <th>Customer Name</th>
                                 <th>Order payment</th>
-                                <th>Car Model</th>
+                                <th>Car Name</th>
+                                <th>Car Variant</th>
                                 <th>Booking</th>                        
                                 <th>Date of Order</th>                        
                                 <th>Selling Price</th>                        
                                 <th>Total Amount Paid</th>                        
                                 <th>Remaining Payment</th>                        
                                 <th>Remarks</th>                        
+                                <th>Cancelled</th>                        
                                 <th>Reason of Cancel</th>                        
                             </tr>
                         </thead>
@@ -56,7 +49,8 @@
                             <tr>                                
                                 <td>{{ order.customer }}</td>
                                 <td>{{ order.payment }}</td>
-                                <td>{{ order.car_model }}</td>
+                                <td>{{ order.car_name }}</td>
+                                <td>{{ order.car_variant }}</td>
                                 <td>{{ order.booking }}</td>
                                 <td>{{ order.date_of_order }}</td>
                                 <td>{{ order.selling_price }}</td>
@@ -65,6 +59,9 @@
                                 <td>{{ order.remarks }}</td>
                                 <td>{{ order.cancelled }}</td>
                                 <td>{{ order.reason_of_cancel }}</td>
+                                <td> <a class="btn btn-success btn-sm" href="{% url 'order_update' pk=order.pk %}">
+                                    Update</a>
+                                </td>
                             </tr>
                             {% endfor %}
                           
@@ -83,21 +80,6 @@
 	
 
     <!-- Link to Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-     <script src="{%static "vendor/jquery/jquery.min.js" %}"></script>
-     <script src="{%static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
- 
-     <script src="{%static "vendor/jquery-easing/jquery.easing.min.js" %}"></script>
- 
-     <script src="{%static "js/sb-admin-2.min.js" %}"></script>
- 
-     <script src="{%static "vendor/chart.js/Chart.min.js" %}"></script>
- 
-     <script src="{%static "js/demo/chart-area-demo.js" %}"></script>
-     <script src="{%static "js/demo/chart-pie-demo.js" %}"></script>
  
 </body>
 </html>
