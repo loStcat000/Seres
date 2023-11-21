@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    {% load static %}
+    <title>{% block title %}Walkins{% endblock %}</title>
+
+    <link rel="shortcut icon" href="{%static "images/SeresIcon.png" %}">
+    <!-- Favicons -->
+    <link href="{%static "assets/img/apple-touch-icon.png" %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{%static "assets/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/boxicons/css/boxicons.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.snow.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.bubble.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/remixicon/remixicon.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/simple-datatables/style.css" %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<body>
+
+          
+
+
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      {% if searched %}
+      <h1>You Searched for {{ searched }}</h1>
+    </div><!-- End Page Title -->
+
+    </br>
+      {% if walkins %}
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Walkins Data</h5>
+
+              <!-- Table with stripped rows -->
+              <table class="table">
+                <thead>
+                  <tr> 
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Contact Number</th>                        
+                    <th scope="col">Purpose Of Visit</th>                        
+                    <th scope="col">Outcome Of Visit</th>                        
+                    <th scope="col">Interest Level </th>                        
+                    <th scope="col">Remarks</th>                        
+                    <th scope="col">Test Drive</th>                        
+                    <th scope="col">Date of Walkin</th>                      
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for walkin in walkins %}
+                        <tr>
+                            <td>{{ walkin.walkin_firstname }}</td>
+                            <td>{{ walkin.walkin_lastname }}</td>
+                            <td>{{ walkin.walkin_contact }}</td>
+                            <td>{{ walkin.purpose_of_visit }}</td>
+                            <td>{{ walkin.outcome_of_visit }}</td>                               
+                            <td>{{ walkin.interest_level }}</td>
+                            <td>{{ walkin.remarks }}</td>
+                            <td>{{ walkin.test_drive }}</td>
+                            <td>{{ walkin.date_of_walkin }}</td>
+                            <td> <a class="btn btn-success btn-sm" href="{% url 'walkin_update' pk=walkin.pk %}">
+                                Update</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" href="{% url 'walkin_delete' pk=walkin.pk %}">
+                                   Delete
+                                </a>
+                              
+                            </td>
+                        </tr>
+                        {% endfor %}
+                      
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+              {% if user.is_staff %}
+              <a class="btn btn-dark"  href="{% url 'add_walkin'%}">Add</a>    
+              {% endif %}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+        <div class="border-top pt-3">
+                        <a href="{% url 'walkin_list' %}" >Cancel</a>
+                    </div>
+  </main><!-- End #main -->
+  
+  {% endif %}
+  
+  {% else %}
+  <main id="main" class="main">
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            
+                <h5>You Forgot to entry a Keyword!!</h5>
+
+                </div>
+            </div>
+    </section>
+    <div class="border-top pt-3">
+        <a href="{% url 'walkin_list' %}" >Cancel</a>
+    </div>
+</main><!-- End #main -->
+   {% endif %}
+
+
+
+
+
+    {% block script %}
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script src="{%static "assets/vendor/apexcharts/apexcharts.min.js" %}"></script>
+    <script src="{%static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{%static "assets/vendor/chart.js/chart.umd.js" %}"></script>
+    <script src="{%static "assets/vendor/echarts/echarts.min.js" %}"></script>
+    <script src="{%static "assets/vendor/quill/quill.min.js" %}"></script>
+    <script src="{%static "assets/vendor/simple-datatables/simple-datatables.js" %}"></script>
+    <script src="{%static "assets/vendor/tinymce/tinymce.min.js" %}"></script>
+    <script src="{%static "assets/vendor/php-email-form/validate.js" %}"></script>
+  
+    <!-- Template Main JS File -->
+    <script src="{%static "assets/js/main.js" %}"></script>
+
+    {% endblock script %} 
+</body>
+</html>
+{% endblock%}

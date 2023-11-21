@@ -85,13 +85,10 @@ def login_request(request):
             return render(request, "login.html", context={})
 
 
-
-#logout function
-def logout_request(request):
-	logout(request)
-	messages.info(request, "You have successfully logged out.") 
-	return redirect('home')
-
+    
+def logout_request(request): 
+    logout(request)
+    return redirect('/login')
 
 def profile(request, pk): 
     if request.user.is_authenticated:

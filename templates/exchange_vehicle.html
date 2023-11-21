@@ -8,27 +8,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SERES</title>
     {% load static %}
-    <title>{% block title %}My Website{% endblock %}</title>
-
 
     <!-- Link to Bootstrap CSS -->
+ 
+    <link rel="shortcut icon" href="{%static "images/SeresIcon.png" %}">
+    <!-- Favicons -->
+    <link href="{%static "assets/img/apple-touch-icon.png" %}" rel="apple-touch-icon">
   
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="{%static "assets/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/boxicons/css/boxicons.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.snow.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.bubble.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/remixicon/remixicon.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/simple-datatables/style.css" %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+      .card-body {
+          max-width: 100%;
+          overflow-x: auto;
+        }
+    </style>
 </head>
-
 <body>
+
+    <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Data Tables</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active">Exchange Vehicle Data</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
     
-    {% if exchange_vehicles %}
-   <div id="content">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h4 class="m-0 font-weight-bold text-primary">Vehicle Exchange Data</h4>
+        <section class="section">
+          <div class="row">
+            <div class="col-lg-12">
+    
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Exchange Vehicle Data</h5>
+                  <form class="d-flex" method="post" action="{% url 'exchange_search'%}"> 
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" name="searched" style="width: 20%;">
+                    <button class="btn btn-secondary" type="sunbmit"> <i class="bi bi-search"></i></button>
+                  </form>
+                  <!-- Table with stripped rows -->
+                </br>
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Vehicle Name</th>
+                        <th scope="col">KiloMeters Run</th>                        
+                        <th scope="col">Vehicle Made Year </th>                        
+                        <th scope="col">License Plate</th>                        
+                        <th scope="col">Vehicle Color</th>                        
+                        <th scope="col">Customer Estimated Color</th>                        
+                        <th scope="col">Actual Value</th>                        
+                        <th scope="col">Exchange Status</th>  
+                        {% if user.is_staff %}
+                        <th></th>
+                        <th></th>
+                        {% endif %}
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if exchange_vehicles %}
+
+                        {% for exchange_vehicle in exchange_list %}
+                            <tr>
+                                <td>{{ exchange_vehicle.customer }}</td>
+                                <td>{{ exchange_vehicle.vehicle_name }}</td>
+                                <td>{{ exchange_vehicle.kiloMeters_run }}</td>
+                                <td>{{ exchange_vehicle.vehicle_made_year }}</td>
+                                <td>{{ exchange_vehicle.license_plate }}</td>
+                                <td>{{ exchange_vehicle.vehicle_color }}</td>
+                                <td>{{ exchange_vehicle.customer_estimated_value }}</td>
+                                <td>{{ exchange_vehicle.actual_value }}</td>
+                                <td>{{ exchange_vehicle.exchange_status }}</td>
+                                {% if user.is_staff %}
+
+                                <td> <a class="btn btn-success btn-sm" href="{% url 'exchange_update' pk=exchange_vehicle.pk %}">
+                                    Update</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'exchange_delete' pk=exchange_vehicle.pk %}">
+                                       Delete
+                                    </a>
+                                  
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                          
+                     
+                    </tbody>
+                    {% endif %}
+
+                  </table>
+                  <!-- End Table with stripped rows -->
+                  {% if user.is_staff %}
+                  <a class="btn btn-dark"  href="{% url 'add_exchange'%}"><i class="bi bi-plus"></i></a>    
+                  {% endif %}
+                  </div>
+                </div>
+              </div>
+    
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          </div>
+        </section>
+        <div class="pagination-wrap">
+          <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">	
+              {% if exchange_list.has_previous %} 
+              <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ exchange_list.previous_page_number }}">Previous</a></li>
+              {% endif%}
+              <li class="page-item disabled" ><a class="page-link" href="#" >Page {{ exchange_list.number }} of {{ exchange_list.paginator.num_pages}}</a></li>
+          
+              {% if exchange_list.has_next%}
+              <li class="page-item"><a class="page-link" href="?page={{ exchange_list.next_page_number }}">Next</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{exchange_list.paginator.num_pages}}">Last &raquo</a></li>
+              {% endif%}
+          </ul>
+          </nav>
+      </div>  
+      </main><!-- End #main -->
+    {% comment %} <div class="col-lg-10 grid-margin stretch-card mx-auto">
+        <div class="card">
+        </br>
+         </br>
+          <form class="d-flex" method="post" action="{% url 'exchange_search'%}"> 
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Search" name="searched">
+            <button class="btn btn-secondary" type="sunbmit"> <i class="mdi mdi-magnify"></i></button>
+          </form>
+          <div class="card-body">
+            <h4 class="card-title">Vehicle Exchange Data</h4>
+            <p class="card-description">
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Customer Name</th>
@@ -44,7 +178,7 @@
                         </thead>
                     
                         <tbody>
-                            {% for exchange_vehicle in exchange_vehicles %}
+                            {% for exchange_vehicle in exchange_list %}
                             <tr>
                                 <td>{{ exchange_vehicle.customer }}</td>
                                 <td>{{ exchange_vehicle.vehicle_name }}</td>
@@ -55,8 +189,14 @@
                                 <td>{{ exchange_vehicle.customer_estimated_value }}</td>
                                 <td>{{ exchange_vehicle.actual_value }}</td>
                                 <td>{{ exchange_vehicle.exchange_status }}</td>
-                                <td> <a class="btn btn-success btn-sm" href="{% url 'exchange_update' pk=exchange_vehicle.pk %}">
+                                <td> <a class="btn btn-inverse-success btn-sm" href="{% url 'exchange_update' pk=exchange_vehicle.pk %}">
                                     Update</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'exchange_delete' pk=exchange_vehicle.pk %}">
+                                       Delete
+                                    </a>
+                                  
                                 </td>
                             </tr>
                             {% endfor %}
@@ -65,34 +205,51 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </br>
+                {% if user.is_staff %}
+                <a class="btn btn-dark"  href="{% url 'add_exchange'%}">Add</a>   
+                {% endif %}
+            </div> 
+            
+        <div class="pagination-wrap">
+            <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">	
+                {% if exchange_list.has_previous %} 
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ exchange_list.previous_page_number }}">Previous</a></li>
+                {% endif%}
+                <li class="page-item disabled" ><a class="page-link" href="#" >Page {{ exchange_list.number }} of {{ exchange_list.paginator.num_pages}}</a></li>
+            
+                {% if exchange_list.has_next%}
+                <li class="page-item"><a class="page-link" href="?page={{ exchange_list.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{exchange_list.paginator.num_pages}}">Last &raquo</a></li>
+                {% endif%}
+            </ul>
+            </nav>
+        </div>  
         </div>
-        {% endif %}
-
-        {% if user.is_staff %}
-        <a class="btn btn-secondary"  href="{% url 'add_exchange'%}">Add</a>   
-        {% endif %}
-        
     </div> 
+      {% endcomment %}
+
+      
+        
 	
+        {% block script %}
+        <!-- Link to Bootstrap JS and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <!-- Link to Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-     <script src="{%static "vendor/jquery/jquery.min.js" %}"></script>
-     <script src="{%static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
- 
-     <script src="{%static "vendor/jquery-easing/jquery.easing.min.js" %}"></script>
- 
-     <script src="{%static "js/sb-admin-2.min.js" %}"></script>
- 
-     <script src="{%static "vendor/chart.js/Chart.min.js" %}"></script>
- 
-     <script src="{%static "js/demo/chart-area-demo.js" %}"></script>
-     <script src="{%static "js/demo/chart-pie-demo.js" %}"></script>
- 
+        <script src="{%static "assets/vendor/apexcharts/apexcharts.min.js" %}"></script>
+        <script src="{%static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+        <script src="{%static "assets/vendor/chart.js/chart.umd.js" %}"></script>
+        <script src="{%static "assets/vendor/echarts/echarts.min.js" %}"></script>
+        <script src="{%static "assets/vendor/quill/quill.min.js" %}"></script>
+        <script src="{%static "assets/vendor/simple-datatables/simple-datatables.js" %}"></script>
+        <script src="{%static "assets/vendor/tinymce/tinymce.min.js" %}"></script>
+        <script src="{%static "assets/vendor/php-email-form/validate.js" %}"></script>
+      
+        <!-- Template Main JS File -->
+        <script src="{%static "assets/js/main.js" %}"></script>
+     {% endblock script %} 
 </body>
 </html>
 

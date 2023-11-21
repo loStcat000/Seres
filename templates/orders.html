@@ -6,34 +6,226 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SERES</title>
     {% load static %}
-    <title>{% block title %}My Website{% endblock %}</title>
-
 
     <!-- Link to Bootstrap CSS -->
+   
+    <link rel="shortcut icon" href="{%static "images/SeresIcon.png" %}">
+    <!-- Favicons -->
+    <link href="{%static "assets/img/apple-touch-icon.png" %}" rel="apple-touch-icon">
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="{%static "assets/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/boxicons/css/boxicons.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.snow.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.bubble.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/remixicon/remixicon.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/simple-datatables/style.css" %}" rel="stylesheet">
 
-</head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-<body>
+   <style>
+    .card-body {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+   
+        /* Hide the length control */
+        .dataTables_length {
+            display: none;
+        }
+
+        /* Hide the search input */
+        .dataTables_filter {
+            display: none;
+        }
+
+        .dataTables_info {
+          display: none;
+      }
+
+        .dataTables_paginate {
+          display: none;
+      }
+
     
-    {% if orders %}
-   <div id="content">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h4 class="m-0 font-weight-bold text-primary">Orders Data</h4>
+      
+   </style>
+</head>
+<body>
+
+   
+    <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Data Tables</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item">Tables</li>
+              <li class="breadcrumb-item active">Orders Data</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
+    
+        <section class="section">
+          <div class="row">
+            <div class="col-lg-12">
+    
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Orders Data</h5>
+                  <form class="d-flex" method="post" action="{% url 'order_search'%}"> 
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" name="searched" style="width: 20%;">
+                    <button class="btn btn-secondary" type="sunbmit"> <i class="bi bi-search"></i></button>
+                  </form>
+                </br>
+                 
+          
+                </br>
+
+                  <!-- Table with stripped rows -->
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Walkin Customer Name</th>
+                        <th scope="col">Order payment
+                          <div class="dropdown">
+                            <select id="paymentTypeFilter">
+                              <option value="All">All</option>
+                              <option value="Cash">Cash</option>
+                              <option value="Bank Transfer">Bank Transfer</option>
+                          </select>
+                        </div>
+                        </th>
+                        <th scope="col">Car Name</th>
+                        <th scope="col">Car Color</th>
+                        <th scope="col">Booking Status
+                          <div class="dropdown">
+                            <select id="bookingStatusFilter">
+                              <option value="All">All</option>
+                              <option value="Pre-Booking">Pre-Booking</option>
+                              <option value="Full Booking">Full Booking</option>
+                          </select>
+                          </div>
+                        </th> 
+                        <th scope="col">Pre-Booking Amount</th>                        
+                        <th scope="col">Booking Amount</th>                        
+                        <th scope="col">Booking Source</th>                         
+                        <th scope="col">Date of Order</th>                        
+                        <th scope="col">Selling Price</th>                        
+                        <th scope="col">Total Amount Paid</th>                        
+                        <th scope="col">Remaining Payment</th>                        
+                        <th scope="col">Remarks</th>                        
+                        <th scope="col">Cancelled</th>                        
+                        <th scope="col">Reason of Cancel</th>    
+                        {% if user.is_staff %}
+                        <th></th>
+                        <th></th>
+                        {% endif %}
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if orders %}
+                        {% for order in order_list %}
+                        <tr>                                
+                            <td>{{ order.customer }}</td>
+                            <td>{{ order.walkin_customer }}</td>
+                            <td>{{ order.payment }}</td>
+                            <td>{{ order.car }}</td>
+                            <td>{{ order.car_color }}</td>
+                            <td>{{ order.booking }}</td>
+                            <td>{{ order.prebooking_amount }}</td>
+                            <td>{{ order.booking_amount }}</td>
+                            <td>{{ order.booking_source }}</td>
+                            <td>{{ order.date_of_order }}</td>
+                            <td>{{ order.selling_price }}</td>
+                            <td>{{ order.total_amount_paid }}</td>
+                            <td>{{ order.remaining_payment }}</td>
+                            <td>{{ order.remarks }}</td>
+                            <td>{{ order.cancelled }}</td>
+                            <td>{{ order.reason_of_cancel }}</td>
+                            {% if user.is_staff %}
+
+                            <td> <a class="btn btn-success btn-sm" href="{% url 'order_update' pk=order.pk %}">
+                                Update</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" href="{% url 'order_delete' pk=order.pk %}">
+                                   Delete
+                                </a>
+                              
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                      
+                     
+                    </tbody>
+                    {% endif %}
+                  </table>
+                  <!-- End Table with stripped rows -->
+                  {% if user.is_staff %}
+                  <a class="btn btn-dark"  href="{% url 'add_orders'%}"><i class="bi bi-plus"></i></a>    
+                  {% endif %}
+                  </div>
+                </div>    
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          </div>
+        </section>
+        <div class="pagination-wrap">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">	
+              {% if order_list.has_previous %} 
+              <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ order_list.previous_page_number }}">Previous</a></li>
+              {% endif%}
+              <li class="page-item disabled" ><a class="page-link" href="#" >Page {{ order_list.number }} of {{ order_list.paginator.num_pages}}</a></li>
+            
+              {% if order_list.has_next%}
+              <li class="page-item"><a class="page-link" href="?page={{ order_list.next_page_number }}">Next</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{order_list.paginator.num_pages}}">Last &raquo</a></li>
+              {% endif%}
+            </ul>
+          </nav>
+        </div>
+      </main><!-- End #main -->
+    {% comment %} <div class="col-lg-10 grid-margin stretch-card mx-auto">
+        <div class="card">
+        </br>
+        </br>
+            <form class="d-flex" method="post" action="{% url 'order_search'%}"> 
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" name="searched">
+                <button class="btn btn-secondary" type="sunbmit"> <i class="mdi mdi-magnify"></i></button>
+              </form>
+          <div class="card-body">
+            <h4 class="card-title">Orders Data</h4>
+            <p class="card-description">
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Customer Name</th>
+                                <th>Walkin Customer Name</th>
                                 <th>Order payment</th>
                                 <th>Car Name</th>
-                                <th>Car Variant</th>
-                                <th>Booking</th>                        
+                                <th>Car Color</th>
+                                <th>Booking Status</th>  
+                                <th>Pre-Booking Amount</th>                        
+                                <th>Booking Amount</th>                        
+                                <th>Booking Source</th>                         
                                 <th>Date of Order</th>                        
                                 <th>Selling Price</th>                        
                                 <th>Total Amount Paid</th>                        
@@ -45,13 +237,17 @@
                         </thead>
                     
                         <tbody>
-                            {% for order in orders %}
+                            {% for order in order_list %}
                             <tr>                                
                                 <td>{{ order.customer }}</td>
+                                <td>{{ order.walkin_customer }}</td>
                                 <td>{{ order.payment }}</td>
-                                <td>{{ order.car_name }}</td>
-                                <td>{{ order.car_variant }}</td>
+                                <td>{{ order.car }}</td>
+                                <td>{{ order.car_color }}</td>
                                 <td>{{ order.booking }}</td>
+                                <td>{{ order.prebooking_amount }}</td>
+                                <td>{{ order.booking_amount }}</td>
+                                <td>{{ order.booking_source }}</td>
                                 <td>{{ order.date_of_order }}</td>
                                 <td>{{ order.selling_price }}</td>
                                 <td>{{ order.total_amount_paid }}</td>
@@ -59,8 +255,14 @@
                                 <td>{{ order.remarks }}</td>
                                 <td>{{ order.cancelled }}</td>
                                 <td>{{ order.reason_of_cancel }}</td>
-                                <td> <a class="btn btn-success btn-sm" href="{% url 'order_update' pk=order.pk %}">
+                                <td> <a class="btn btn-inverse-success btn-sm" href="{% url 'order_update' pk=order.pk %}">
                                     Update</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'order_delete' pk=order.pk %}">
+                                       Delete
+                                    </a>
+                                  
                                 </td>
                             </tr>
                             {% endfor %}
@@ -69,19 +271,174 @@
                         </tbody>
                     </table>
                 </div>
+            </br>
+            {% if user.is_staff %}
+            <a class="btn btn-dark"  href="{% url 'add_orders'%}">Add</a>   
+            {% endif %}
             </div>
+            <div class="pagination-wrap">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">	
+                    {% if order_list.has_previous %} 
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ order_list.previous_page_number }}">Previous</a></li>
+                    {% endif%}
+                    <li class="page-item disabled" ><a class="page-link" href="#" >Page {{ order_list.number }} of {{ order_list.paginator.num_pages}}</a></li>
+                  
+                    {% if order_list.has_next%}
+                    <li class="page-item"><a class="page-link" href="?page={{ order_list.next_page_number }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{order_list.paginator.num_pages}}">Last &raquo</a></li>
+                    {% endif%}
+                  </ul>
+                </nav>
+              </div>
         </div>
-        {% endif %}
+    </div> {% endcomment %}
+       
 
-        {% if user.is_staff %}
-        <a class="btn btn-secondary"  href="{% url 'add_orders'%}">Add</a>   
-        {% endif %}
-    </div> 
 	
 
-    <!-- Link to Bootstrap JS and jQuery -->
  
+
+{% block script %}
+<!-- Link to Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script src="{%static "assets/vendor/apexcharts/apexcharts.min.js" %}"></script>
+<script src="{%static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+<script src="{%static "assets/vendor/chart.js/chart.umd.js" %}"></script>
+<script src="{%static "assets/vendor/echarts/echarts.min.js" %}"></script>
+<script src="{%static "assets/vendor/quill/quill.min.js" %}"></script>
+<script src="{%static "assets/vendor/simple-datatables/simple-datatables.js" %}"></script>
+<script src="{%static "assets/vendor/tinymce/tinymce.min.js" %}"></script>
+<script src="{%static "assets/vendor/php-email-form/validate.js" %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{%static "assets/js/main.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // Handle sorting when a dropdown item is clicked
+    $('.dropdown-item').on('click', function(e) {
+        e.preventDefault();
+        const sortBy = $(this).data('sort');
+        let columnIndex = 0; // Default column index for sorting
+        let sortDirection = 'desc'; // Default sort direction
+
+        // Set the column index based on the chosen sorting option
+        if (sortBy === 'customer_name') {
+            columnIndex = 0; // Customer Name column index
+        } else if (sortBy === 'date_order') {
+            columnIndex = 9; // Date of Order column index
+            sortDirection = 'desc'; // Set sort direction to descending for date column
+        }
+        // Add more conditions for additional sorting options if needed
+
+        // Apply sorting to the chosen column index using DataTables API
+        $('table').DataTable().order([[columnIndex, sortDirection]]).draw();
+    });
+
+    // Initialize DataTables for your table
+    $('table').DataTable();
+});
+</script>
+
+{% comment %} <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Select the dropdown
+    var bookingStatusFilter = document.getElementById('bookingStatusFilter');
+
+    // Add an event listener to handle changes in the dropdown
+    bookingStatusFilter.addEventListener('change', function() {
+        var selectedValue = bookingStatusFilter.value;
+        var tableRows = document.querySelectorAll('tbody tr'); // Select all table rows
+        
+        // Loop through each row and toggle visibility based on selected value
+        tableRows.forEach(function(row) {
+            var bookingStatusCell = row.cells[5]; // Adjust index according to the 'Booking Status' column
+            
+            if (selectedValue === 'All' || bookingStatusCell.textContent === selectedValue) {
+                row.style.display = ''; // Show the row
+            } else {
+                row.style.display = 'none'; // Hide the row
+            }
+        });
+    });
+});
+</script> 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var paymentTypeFilter = document.getElementById('paymentTypeFilter');
+
+    paymentTypeFilter.addEventListener('change', function() {
+      var selectedPaymentType = paymentTypeFilter.value;
+      var tableRows = document.querySelectorAll('.table tbody tr');
+
+      tableRows.forEach(function(row) {
+        var orderPaymentCell = row.querySelector('td:nth-child(3)'); // Assuming the Order payment cell is the third column
+
+        if (selectedPaymentType === 'All' || orderPaymentCell.textContent === selectedPaymentType) {
+          row.style.display = ''; // Show the row
+        } else {
+          row.style.display = 'none'; // Hide the row
+        }
+      });
+    });
+  });
+</script> {% endcomment %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var bookingStatusFilter = document.getElementById('bookingStatusFilter');
+    var paymentTypeFilter = document.getElementById('paymentTypeFilter');
+
+    var displayedRows = []; // Array to store currently displayed rows
+
+    bookingStatusFilter.addEventListener('change', function() {
+      var selectedValue = bookingStatusFilter.value;
+      var tableRows = document.querySelectorAll('.table tbody tr');
+
+      displayedRows = []; // Clear displayed rows array
+
+      tableRows.forEach(function(row) {
+        var bookingStatusCell = row.querySelector('td:nth-child(6)'); // Assuming the Booking Status cell is the sixth column
+
+        if (selectedValue === 'All' || bookingStatusCell.textContent === selectedValue) {
+          row.style.display = ''; // Show the row
+          displayedRows.push(row); // Add row to displayed rows array
+        } else {
+          row.style.display = 'none'; // Hide the row
+        }
+      });
+
+      // Trigger payment type filter when booking status changes
+      paymentTypeFilter.dispatchEvent(new Event('change'));
+    });
+
+    paymentTypeFilter.addEventListener('change', function() {
+      var selectedPaymentType = paymentTypeFilter.value;
+
+      // Apply payment type filter only on the displayed rows from the booking status filter
+      displayedRows.forEach(function(row) {
+        var orderPaymentCell = row.querySelector('td:nth-child(3)'); // Assuming the Order payment cell is the third column
+
+        if (selectedPaymentType === 'All' || orderPaymentCell.textContent === selectedPaymentType) {
+          row.style.display = ''; // Show the row
+        } else {
+          row.style.display = 'none'; // Hide the row
+        }
+      });
+    });
+  });
+</script>
+
+
+{% endblock script %} 
 </body>
 </html>
-
-{% endblock%}
+{% endblock %}

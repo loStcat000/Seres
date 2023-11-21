@@ -28,6 +28,19 @@ class SignUpForm(UserCreationForm):
             user.save()
         return user
     
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['firstname'].widget.attrs['class'] = 'form-control'
+        self.fields['lastname'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].widget.attrs['class'] = 'form-control'
+        self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+	        
+
+    
 class SignupForm(forms.ModelForm):
     class Meta:
         model = get_user_model()

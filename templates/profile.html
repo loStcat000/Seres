@@ -7,38 +7,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Website{% endblock %}</title>
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SERES</title>
     {% load static %}
+
   
+    <link rel="shortcut icon" href="{%static "images/SeresIcon.png" %}">
+    <!-- Favicons -->
+    <link href="{%static "assets/img/apple-touch-icon.png" %}" rel="apple-touch-icon">
+  
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  
+    <!-- Vendor CSS Files -->
+    <link href="{%static "assets/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/boxicons/css/boxicons.min.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.snow.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/quill/quill.bubble.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/remixicon/remixicon.css" %}" rel="stylesheet">
+    <link href="{%static "assets/vendor/simple-datatables/style.css" %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyWWKTBUA8KQA2lggyYU8sPHMzJK4lQ6e3" crossorigin="anonymous">
+
    
+    <!-- Template Main CSS File -->
+    <link href="{%static "assets/css/style.css" %}" rel="stylesheet">
+
 </head>
-
 <body>
-
     {% if profile %}
 
-        <h1>{{ profile.user.username }}'s Profile</h1>
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+          <h1>Profile</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Profile</li>
+            </ol>
+          </nav>
+        </div><!-- End Page Title -->
     
+        <section class="section profile">
+            <div class="row">
+               
+                <div class="col-xl-10">
+            
+                    <div class="card">
+                        <div class="card-body pt-3">
+                            <!-- Bordered Tabs -->
+                            <ul class="nav nav-tabs nav-tabs-bordered">
+                
+                                <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                                </li>
+                
+                                <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                                </li>
+                
+                            </ul>
+                            <div class="tab-content pt-2">
+            
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    
+                                    <h5 class="card-title">Profile Details</h5>
+                    
+                                    <h1> Logged in as {{ profile.user.username }}.</h1>
+
+                                </div>
+                            </br>
+                                <a class="btn btn-danger btn-sm" href="{% url 'logout' %}">
+                                        Logout
+                                     </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+        <h1>{{ profile.user.username }}'s Profile</h1>
+       
     {% endif %}
+    {% block script %}
     <!-- Link to Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="{%static "static/vendor/jquery/jquery.min.js" %}"></script>
-    <script src="{%static "static/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
-
-    <script src="{%static "static/vendor/jquery-easing/jquery.easing.min.js" %}"></script>
-
-    <script src="{%static "static/js/sb-admin-2.min.js" %}"></script>
-
-    <script src="{%static "static/vendor/chart.js/Chart.min.js" %}"></script>
-
-    <script src="{%static "static/js/demo/chart-area-demo.js" %}"></script>
-    <script src="{%static "static/js/demo/chart-pie-demo.js" %}"></script>
+    <script src="{%static "assets/vendor/apexcharts/apexcharts.min.js" %}"></script>
+    <script src="{%static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{%static "assets/vendor/chart.js/chart.umd.js" %}"></script>
+    <script src="{%static "assets/vendor/echarts/echarts.min.js" %}"></script>
+    <script src="{%static "assets/vendor/quill/quill.min.js" %}"></script>
+    <script src="{%static "assets/vendor/simple-datatables/simple-datatables.js" %}"></script>
+    <script src="{%static "assets/vendor/tinymce/tinymce.min.js" %}"></script>
+    <script src="{%static "assets/vendor/php-email-form/validate.js" %}"></script>
+  
+    <!-- Template Main JS File -->
+  
+ {% endblock script %} 
 </body>
 </html>
 
