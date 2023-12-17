@@ -151,8 +151,8 @@ def add_payments(request):
     return render(request, "add_payments.html", {'form':form, 'submitted':submitted})
     
 def all_orders(request):   
-    orders = Orders.objects.all()
-    p = Paginator(Orders.objects.all(), 5)
+    orders = Orders.objects.filter(delivery=False)
+    p = Paginator(Orders.objects.filter(delivery=False), 20)
     page = request.GET.get('page')
     order_list = p.get_page(page)
     return render(request, 'orders.html', {'orders':orders, 'order_list': order_list})
@@ -177,6 +177,12 @@ def add_orders(request):
     else:
         return redirect('login')
 
+def all_delivery(request):   
+    orders = Orders.objects.filter(delivery=True)
+    p = Paginator(Orders.objects.filter(delivery=True), 10)
+    page = request.GET.get('page')
+    order_list = p.get_page(page)
+    return render(request, 'delivery.html', {'orders':orders, 'order_list': order_list})
 
 class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = models.Car
@@ -265,7 +271,7 @@ class PaymentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class OrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = models.Orders
     fields = ['customer', 'walkin_customer', 'payment', 'car', 'car_color', 'booking', 'prebooking_amount', 'booking_amount', 'booking_source', 'date_of_order', 'selling_price', 
-            'total_amount_paid', 'remaining_payment', 'remarks', 'cancelled', 'reason_of_cancel']
+            'total_amount_paid', 'remaining_payment', 'remarks', 'cancelled', 'reason_of_cancel', 'delivery', 'date_of_delivery']
     template_name = 'add_orders.html'
 
     success_url = reverse_lazy('all_orders')

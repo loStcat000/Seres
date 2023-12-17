@@ -52,6 +52,11 @@ class BookingType(models.Model):
     def __str__(self):
         return f'{self.booking_type}'
 
+class BookingSource(models.Model):
+    booking_source = models.CharField(max_length=100)
+   
+    def __str__(self):
+        return f'{self.booking_source}'
 
 
 
@@ -99,13 +104,15 @@ class Orders(models.Model):
         MinValueValidator(0)], null=True, blank=True)
     booking_amount = models.IntegerField(default=0, validators=[
         MinValueValidator(0)], null=True, blank=True)
-    booking_source = models.CharField(max_length=150, default='Showroom')
+    booking_source = models.ForeignKey('BookingSource', on_delete=models.CASCADE)
     selling_price = models.IntegerField(default=1)
     total_amount_paid = models.IntegerField(default=1)
     remaining_payment= models.IntegerField(default=1)
     remarks = models.TextField(null=True, blank=True)
     cancelled = models.BooleanField()
     reason_of_cancel = models.TextField(null=True, blank=True) 
+    delivery = models.BooleanField(null=True, blank=True)
+    date_of_delivery = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.customer} - {self.car}'

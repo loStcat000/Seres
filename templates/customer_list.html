@@ -30,7 +30,36 @@
     <link href="{%static "assets/vendor/remixicon/remixicon.css" %}" rel="stylesheet">
     <link href="{%static "assets/vendor/simple-datatables/style.css" %}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-          
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+   <style>
+    .card-body {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+   
+        /* Hide the length control */
+        .dataTables_length {
+            display: none;
+        }
+
+        /* Hide the search input */
+        .dataTables_filter {
+            display: none;
+        }
+
+        .dataTables_info {
+          display: none;
+      }
+
+        .dataTables_paginate {
+          display: none;
+      }
+
+    
+      
+   </style>      
     
 </head>
 <body>
@@ -210,23 +239,54 @@
  
 	
 
-        {% block script %}
+ {% block script %}
         <!-- Link to Bootstrap JS and jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-        <script src="{%static "assets/vendor/apexcharts/apexcharts.min.js" %}"></script>
-        <script src="{%static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
-        <script src="{%static "assets/vendor/chart.js/chart.umd.js" %}"></script>
-        <script src="{%static "assets/vendor/echarts/echarts.min.js" %}"></script>
-        <script src="{%static "assets/vendor/quill/quill.min.js" %}"></script>
-        <script src="{%static "assets/vendor/simple-datatables/simple-datatables.js" %}"></script>
-        <script src="{%static "assets/vendor/tinymce/tinymce.min.js" %}"></script>
-        <script src="{%static "assets/vendor/php-email-form/validate.js" %}"></script>
+  <script src="{%static "assets/vendor/apexcharts/apexcharts.min.js" %}"></script>
+  <script src="{%static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+  <script src="{%static "assets/vendor/chart.js/chart.umd.js" %}"></script>
+  <script src="{%static "assets/vendor/echarts/echarts.min.js" %}"></script>
+  <script src="{%static "assets/vendor/quill/quill.min.js" %}"></script>
+  <script src="{%static "assets/vendor/simple-datatables/simple-datatables.js" %}"></script>
+  <script src="{%static "assets/vendor/tinymce/tinymce.min.js" %}"></script>
+  <script src="{%static "assets/vendor/php-email-form/validate.js" %}"></script>
       
         <!-- Template Main JS File -->
-        <script src="{%static "assets/js/main.js" %}"></script>
-      
-     {% endblock script %} 
+  <script src="{%static "assets/js/main.js" %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  
+  <script>
+    $(document).ready(function() {
+      // Handle sorting when a dropdown item is clicked
+      $('.dropdown-item').on('click', function(e) {
+          e.preventDefault();
+          const sortBy = $(this).data('sort');
+          let columnIndex = 0; // Default column index for sorting
+          let sortDirection = 'desc'; // Default sort direction
+  
+          // Set the column index based on the chosen sorting option
+          if (sortBy === 'customer_firstname') {
+              columnIndex = 0; // Customer Name column index
+          } else if (sortBy === 'customer_lastname') {
+              columnIndex = 1; // Date of Order column index
+              sortDirection = 'desc'; // Set sort direction to descending for date column
+          }
+          // Add more conditions for additional sorting options if needed
+  
+          // Apply sorting to the chosen column index using DataTables API
+          $('table').DataTable().order([[columnIndex, sortDirection]]).draw();
+      });
+  
+      // Initialize DataTables for your table
+      $('table').DataTable();
+  });
+  </script>
+{% endblock script %} 
  
 </body>
 </html>

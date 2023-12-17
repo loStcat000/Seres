@@ -69,7 +69,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
               <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active">Orders Data</li>
+              <li class="breadcrumb-item active">Delivery Data</li>
             </ol>
           </nav>
         </div><!-- End Page Title -->
@@ -80,14 +80,15 @@
     
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Orders Data</h5>
+                  <h5 class="card-title">Delivery Data</h5>
                   <form class="d-flex" method="post" action="{% url 'order_search'%}"> 
                     {% csrf_token %}
                     <input class="form-control me-2" type="search" placeholder="Search" name="searched" style="width: 20%;">
                     <button class="btn btn-secondary" type="sunbmit"> <i class="bi bi-search"></i></button>
                   </form>
                 </br>
-
+                 
+          
                 </br>
 
                   <!-- Table with stripped rows -->
@@ -102,8 +103,8 @@
                             <select id="paymentTypeFilter">
                               <option value="All">All</option>
                               <option value="Cash">Cash</option>
-                              <option value="Bank Transfer">Bank Transfer</option> 
-                            </select>
+                              <option value="Bank Transfer">Bank Transfer</option>
+                          </select>
                         </div>
                         </th>
                         <th scope="col">Car Name</th>
@@ -114,12 +115,12 @@
                               <option value="All">All</option>
                               <option value="Pre-Booking">Pre-Booking</option>
                               <option value="Full Booking">Full Booking</option>
-                            </select>
+                          </select>
                           </div>
                         </th> 
                         <th scope="col">Pre-Booking Amount</th>                        
                         <th scope="col">Booking Amount</th>                        
-                        <th scope="col">Booking Source <div class="dropdown">
+                        <th scope="col">Booking Source<div class="dropdown">
                           <select id="bookingSourceFilter">
                             <option value="All">All</option>
                             <option value="Showroom">Showroom</option>
@@ -131,9 +132,8 @@
                         <th scope="col">Total Amount Paid</th>                        
                         <th scope="col">Remaining Payment</th>                        
                         <th scope="col">Remarks</th>                        
-                        <th scope="col">Cancelled</th>                        
-                        <th scope="col">Reason of Cancel</th>   
-                        <th scope="col">Delivery</th>                            
+                        <th scope="col">Delivery</th>                        
+                        <th scope="col">Date of Delivery</th>    
                         {% if user.is_staff %}
                         <th></th>
                         <th></th>
@@ -144,7 +144,7 @@
                     <tbody>
                       {% if orders %}
                         {% for order in order_list %}
-                        <tr {% if order.cancelled %} class="table-secondary"{% endif %} >                                
+                        <tr>                                
                             <td>{{ order.customer }}</td>
                             <td>{{ order.walkin_customer }}</td>
                             <td>{{ order.payment }}</td>
@@ -159,9 +159,8 @@
                             <td>{{ order.total_amount_paid }}</td>
                             <td>{{ order.remaining_payment }}</td>
                             <td>{{ order.remarks }}</td>
-                            <td>{{ order.cancelled }}</td>
-                            <td>{{ order.reason_of_cancel }}</td>
                             <td>{{ order.delivery }}</td>
+                            <td>{{ order.date_of_delivery }}</td>
                             {% if user.is_staff %}
 
                             <td> <a class="btn btn-success btn-sm" href="{% url 'order_update' pk=order.pk %}">
@@ -182,9 +181,6 @@
                     {% endif %}
                   </table>
                   <!-- End Table with stripped rows -->
-                  {% if user.is_staff %}
-                  <a class="btn btn-dark"  href="{% url 'add_orders'%}"><i class="bi bi-plus"></i></a>    
-                  {% endif %}
                   </div>
                 </div>    
             </div>

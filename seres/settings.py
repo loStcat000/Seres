@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'accounts',
     'main',
     'main.templatetags',
+    'django_select2',
+
 ]
 
 MIDDLEWARE = [
@@ -123,6 +125,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+import os
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [ BASE_DIR /"static", 'C:/Users/HP/Desktop/seres/static',
@@ -132,3 +135,7 @@ STATICFILES_DIRS = [ BASE_DIR /"static", 'C:/Users/HP/Desktop/seres/static',
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DJANGO_SELECT2_JS = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js'
+DJANGO_SELECT2_CSS = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css'
+

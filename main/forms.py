@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
 from django.forms import ModelForm
+from django_select2.forms import ModelSelect2Widget
 
 
 class CarForm(ModelForm):
@@ -139,7 +140,7 @@ class OrdersForm(ModelForm):
 	class Meta:
 			model = Orders
 			fields = ("customer", "walkin_customer", "car", "car_color", "payment", "booking", "prebooking_amount", "booking_amount", "booking_source", "date_of_order", "selling_price", 
-			"total_amount_paid", "remaining_payment", "remarks", "cancelled", "reason_of_cancel")
+			"total_amount_paid", "remaining_payment", "remarks", "cancelled", "reason_of_cancel", "delivery", "date_of_delivery")
 			labels = {
 				'customer':'Customer', 
 				'walkin_customer':'WalkIn Customer',
@@ -156,7 +157,10 @@ class OrdersForm(ModelForm):
 				'remaining_payment':'Remaining Payment',  
 				'remarks':'Remarks',  
 				'cancelled':'Cancelled',  
-				'reason_of_cancel':'Reason Of Cancel',  
+				'reason_of_cancel':'Reason Of Cancel',
+				'delivery':'Delivery',
+				'date_of_delivery':'Date of Delivery',
+
 
 			}
 			widgets = {
@@ -168,7 +172,7 @@ class OrdersForm(ModelForm):
 				'booking': forms.Select(attrs={}),
 				'prebooking_amount': forms.NumberInput(attrs={'class':'form-control'}),
 				'booking_amount': forms.NumberInput(attrs={'class':'form-control'}),
-            	'booking_source': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Booking Source'}),
+            	'booking_source': forms.Select(attrs={}),
 				'date_of_order': forms.DateInput(attrs={'class':'form-control'}),
 				'selling_price': forms.NumberInput(attrs={'class':'form-control'}),
             	'total_amount_paid': forms.NumberInput(attrs={'class':'form-control'}),
@@ -176,6 +180,9 @@ class OrdersForm(ModelForm):
             	'remarks': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Remarks'}),
             	'cancelled': forms.CheckboxInput(attrs={}),
             	'reason_of_cancel': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Reason of Cancel'}),
+				'delivery': forms.CheckboxInput(attrs={}),
+				'date_of_delivery': forms.DateInput(attrs={'class':'form-control'}),
+
 
             }
 
@@ -189,3 +196,8 @@ class OrdersForm(ModelForm):
 			cleaned_data['total_amount_paid'] = total_amount_paid
 
 			return cleaned_data
+	
+	def __init__(self, *args, **kwargs):
+		super(OrdersForm, self).__init__(*args, **kwargs)
+		self.fields['customer'].queryset = Customer.objects.order_by('customer_firstname')
+		self.fields['walkin_customer'].queryset = WalkIn.objects.order_by('walkin_firstname')  # Replace 'customer_name' with the field you want to sort by

@@ -28,6 +28,8 @@ urlpatterns = [
     path('profile/<int:pk>', views.profile, name='profile'),
     path("logout/", views.logout_request, name="logout"),
 
+
+
 ]
 
     

@@ -18,6 +18,8 @@ admin.site.register(models.Orders)
 
 admin.site.register(models.BookingType)
 
+admin.site.register(models.BookingSource)
+
 admin.site.register(models.PaymentType)
 
 
